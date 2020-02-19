@@ -3,6 +3,7 @@
 namespace Cc\Attacent;
 
 use Cc\Attacent\Models\Attachment;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -49,7 +50,7 @@ class Attacent
         if ($type && array_key_exists($type, $allowed_ext) && (1 === preg_match('/^(' . $allowed_ext[$type] . ')$/i', $file->extension()))) {
             $path = $this->disk->putFile($this->prefix . $type . '/' . date('Y/m/d'), $file);
             if (empty($path)) {
-                throw new \Exception('write file error');
+                throw new Exception('write file error');
             }
             $attach = new Attachment();
             $attach->type = $type;
@@ -65,7 +66,7 @@ class Attacent
             ];
         }
 
-        throw new \Exception('invalid file');
+        throw new Exception('invalid file ' . $file->getMimeType());
     }
 
     public function getList($page = 1, $type = 'image', $filter = ['year' => null, 'month' => null])
@@ -103,9 +104,9 @@ class Attacent
                 return true;
             }
 
-            throw new \Exception($attach->path . ' not exist');
+            throw new Exception($attach->path . ' not exist');
         }
 
-        throw new \Exception('db record not exist');
+        throw new Exception('db record not exist');
     }
 }
