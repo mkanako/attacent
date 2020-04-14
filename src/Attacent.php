@@ -52,8 +52,8 @@ class Attacent
                 throw new \Exception('write file error');
             }
             $attach = new Attachment();
-            $attach->path = $path;
             $attach->type = $type;
+            $attach->path = $path;
             $attach->filename = $file->getClientOriginalName();
             $attach->uid = $this->uid;
             $attach->save();
@@ -98,8 +98,8 @@ class Attacent
         $attach = Attachment::find($id);
         if ($attach) {
             $attach->delete();
-            if ($attach->path && $this->disk->exists($attach->path)) {
-                $this->disk->delete($attach->path);
+            if ($attach->path && $this->disk->exists($this->prefix . $attach->path)) {
+                $this->disk->delete($this->prefix . $attach->path);
                 return true;
             }
 
