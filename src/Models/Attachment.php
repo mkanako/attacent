@@ -12,7 +12,7 @@ class Attachment extends Model
         'created_at',
         'updated_at',
         'type',
-        'path',
+        // 'path',
     ];
     protected $appends = ['url'];
 

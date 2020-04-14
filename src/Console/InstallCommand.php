@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 class InstallCommand extends Command
 {
     protected $signature = 'attacent:install {--force}';
-
     protected $description = 'Install Command';
 
     public function handle()

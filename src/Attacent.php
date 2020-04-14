@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Attacent
 {
     private $uid = 0;
-    private $perPage = 20;
+    private $pageSize = 20;
     private $disk;
+    private $prefix = '';
 
     public function __construct()
     {
@@ -24,18 +25,24 @@ class Attacent
         return $this;
     }
 
-    public function setPerPage($perPage)
+    public function setPageSize($pageSize)
     {
-        $this->perPage = $perPage;
+        $this->pageSize = $pageSize;
+        return $this;
+    }
+
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix . '/';
         return $this;
     }
 
     public function upload(UploadedFile $file)
     {
-        $fileTypes = config('attacent.fileTypes', []);
+        $allowed_ext = config('attacent.allowed_ext', []);
         $type = strstr($file->getMimeType(), '/', true);
-        if ($type && array_key_exists($type, $fileTypes) && (1 === preg_match($fileTypes[$type], $file->extension()))) {
-            $path = $this->disk->putFile($type . '/' . date('Y/m/d'), $file);
+        if ($type && array_key_exists($type, $allowed_ext) && (1 === preg_match('/^(' . $allowed_ext[$type] . ')$/i', $file->extension()))) {
+            $path = $this->disk->putFile($this->prefix . $type . '/' . date('Y/m/d'), $file);
             if (empty($path)) {
                 throw new \Exception('write file error');
             }
@@ -48,6 +55,7 @@ class Attacent
             return [
                 'url' => $attach->url,
                 'filename' => $attach->filename,
+                'path' => $attach->path,
                 'id' => $attach->id,
             ];
         }
@@ -70,12 +78,12 @@ class Attacent
             });
         return [
             'total' => $attach->count(),
-            'perPage' => $this->perPage,
+            'pageSize' => $this->pageSize,
             'page' => $page,
             'data' => $attach
                 ->orderBy('id', 'desc')
-                ->offset(($page - 1) * $this->perPage)
-                ->limit($this->perPage)
+                ->offset(($page - 1) * $this->pageSize)
+                ->limit($this->pageSize)
                 ->get(),
         ];
     }
