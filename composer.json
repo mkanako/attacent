@@ -1,0 +1,24 @@
+{
+    "name": "cc/attacent",
+    "description": "attacent",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "C.C"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Cc\\Attacent\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+              "Cc\\Attacent\\AttacentServiceProvider"
+            ]
+        }
+    }
+}
