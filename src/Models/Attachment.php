@@ -18,7 +18,8 @@ class Attachment extends Model
 
     public function setPathAttribute($value)
     {
-        $this->attributes['path'] = trim(strstr($value, '/'), '/');
+        $path = explode($this->attributes['type'], $value);
+        $this->attributes['path'] = trim($path[1] ?? $value, '/');
     }
 
     public function getPathAttribute()
@@ -28,6 +29,6 @@ class Attachment extends Model
 
     public function getUrlAttribute()
     {
-        return resolve('Cc\Attacent\disk')->url($this->path);
+        return resolve('Cc\Attacent')->url($this->path);
     }
 }

@@ -16,7 +16,12 @@ class Attacent
     public function __construct()
     {
         $this->disk = Storage::disk('attacent');
-        app()->instance('Cc\Attacent\disk', $this->disk);
+        app()->instance('Cc\Attacent', $this);
+    }
+
+    public function url($path)
+    {
+        return $this->disk->url($this->prefix . $path);
     }
 
     public function setUid($uid)
