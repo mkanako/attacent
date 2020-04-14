@@ -35,10 +35,12 @@ class Attacent
         $fileTypes = config('attacent.fileTypes', []);
         $type = strstr($file->getMimeType(), '/', true);
         if ($type && array_key_exists($type, $fileTypes) && (1 === preg_match($fileTypes[$type], $file->extension()))) {
-            $date = date('Y/m/d');
-            $this->disk->putFile($type . '/' . $date, $file);
+            $path = $this->disk->putFile($type . '/' . date('Y/m/d'), $file);
+            if (empty($path)) {
+                throw new \Exception('write file error');
+            }
             $attach = new Attachment();
-            $attach->path = $date . '/' . $file->hashName();
+            $attach->path = $path;
             $attach->type = $type;
             $attach->filename = $file->getClientOriginalName();
             $attach->uid = $this->uid;

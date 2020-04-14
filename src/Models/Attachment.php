@@ -16,6 +16,11 @@ class Attachment extends Model
     ];
     protected $appends = ['url'];
 
+    public function setPathAttribute($value)
+    {
+        $this->attributes['path'] = trim(strstr($value, '/'), '/');
+    }
+
     public function getPathAttribute()
     {
         return $this->type . '/' . $this->attributes['path'];
