@@ -8,6 +8,9 @@
             "name": "C.C"
         }
     ],
+    "scripts": {
+        "format":"php-cs-fixer fix --config=.php_cs"
+    },
     "require": {},
     "autoload": {
         "psr-4": {

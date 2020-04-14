@@ -17,7 +17,7 @@ class CreateAttachmentsTable extends Migration
                 $table->string('filename', 255);
                 $table->string('path', 255);
                 $table->integer('uid')->unsigned()->default(0);
-                $table->string('type',20);
+                $table->string('type', 20);
                 $table->timestamps();
             });
         }
